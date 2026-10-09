@@ -133,3 +133,39 @@ function toggleCumplido(id) {
 - Si la ventana principal se cierra, `hayPadre()` lo detecta (`window.opener.closed`) y se muestra un aviso en vez de dar error.
 
 Así un botón de la segunda ventana cambia los datos de la primera: es comunicación entre ventanas (criterio f).
+
+## Fase 6 · Estadísticas, pulido y documentación (criterios d + h)
+
+**Panel de estadísticas** (`pintarEstadisticas`): total de hábitos (`habitos.length`), días cumplidos (`registros.filter(r => r.cumplido).length`), días fallados (`registros.filter(r => !r.cumplido).length`) y porcentaje de éxito. Se actualiza al crear un hábito, al guardar un registro y al cambiar un estado, también si el cambio viene de la segunda ventana.
+
+**Borrar todo:** pide confirmación con `confirm`. Si se acepta, borra las cookies `habitos` y `registros` con `borrarCookie`, vacía los dos arrays y repinta todo.
+
+**Revisión final:** la consola no muestra errores, todas las funciones están comentadas, y al recargar la página siguen ahí los hábitos, los registros y sus estados.
+
+### Problema que surgió y cómo lo resolví
+
+**`window.opener.habitos` daba `undefined`.** La segunda ventana intentaba leer el array directamente desde el padre, pero `habitos` y `registros` están declarados con `let`. Las variables globales con `let` y `const` **no se convierten en propiedades de `window`** (las funciones declaradas con `function` sí). La solución fue crear en `app.js` la función `obtenerDatos()`, que devuelve `{ habitos, registros }`, y llamarla desde la hija con `window.opener.obtenerDatos()`. Como devuelve los arrays originales y no una copia, y los cambios se hacen siempre con `window.opener.toggleCumplido(id)`, la ventana principal sigue siendo la única dueña de los datos.
+
+**Otro detalle:** si se cerraba la ventana principal y se pulsaba *Cambiar* en la segunda, saltaba un error. Se resolvió con `hayPadre()`, que comprueba `window.opener` y `window.opener.closed` antes de usarlo.
+
+---
+
+## Cobertura del RA3
+
+| Criterio | Dónde |
+|---|---|
+| g) almacenamiento | Dos arrays de objetos en dos cookies con JSON (`guardarTodo`, `cargarTodo`) |
+| d) generar contenido | Desplegable, lista, tabla y estadísticas generados por código |
+| e) interacción | Dos formularios validados y cambio de estado desde la tabla |
+| f) ventanas | Menú, modal con `classList` y segunda ventana con `window.open` / `window.opener` |
+| h) depurar y documentar | Código comentado, sin errores en consola, este README por fases |
+
+## Archivos
+
+```
+index.html       Página principal: estadísticas, formularios, menú y modal
+estilos.css      Estilos (modal, tabla, formularios, responsive)
+app.js           Lógica: cookies, hábitos, registros, tabla, toggle y estadísticas
+seguimiento.html Segunda ventana con la tabla
+seguimiento.js   Lee y cambia los datos de la principal con window.opener
+```

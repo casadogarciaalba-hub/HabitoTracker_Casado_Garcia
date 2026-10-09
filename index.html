@@ -21,6 +21,27 @@
 
   <main class="contenido">
 
+    <!-- PANEL DE ESTADÍSTICAS -->
+    <section class="tarjeta estadisticas" aria-label="Estadísticas">
+      <div class="dato">
+        <span class="numero" id="totalHabitos">0</span>
+        <span class="etiqueta">Hábitos</span>
+      </div>
+      <div class="dato">
+        <span class="numero ok" id="totalCumplidos">0</span>
+        <span class="etiqueta">Días cumplidos</span>
+      </div>
+      <div class="dato">
+        <span class="numero ko" id="totalFallados">0</span>
+        <span class="etiqueta">Días fallados</span>
+      </div>
+      <div class="dato">
+        <span class="numero" id="porcentaje">0%</span>
+        <span class="etiqueta">Éxito</span>
+      </div>
+      <button type="button" id="borrarTodo" class="boton boton-peligro">Borrar todo</button>
+    </section>
+
     <!-- FORMULARIO A · Crear hábitos -->
     <section class="tarjeta">
       <h2>Nuevo hábito</h2>
@@ -74,6 +95,8 @@
     </section>
 
   </main>
+
+  <footer>HábitoTracker · Alba Casado García · 2º DAW · IES Juan García Valdemora</footer>
 
   <!-- MODAL · Ventana flotante con la tabla de seguimiento -->
   <div id="modal" class="modal oculto">

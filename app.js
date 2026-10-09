@@ -147,6 +147,7 @@ function crearHabito(evento) {
   errorHabito.textContent = "";
   pintarListaHabitos();
   rellenarDesplegable(); // el nuevo hábito aparece en el formulario B
+  pintarEstadisticas();
   console.log("Hábito creado:", habito);
 }
 
@@ -435,6 +436,7 @@ function obtenerDatos() {
 /** Repinta la tabla del modal y, si está abierta, la de la segunda ventana. */
 function refrescarVistas() {
   pintarTabla();
+  pintarEstadisticas();
 
   if (ventanaSeguimiento && !ventanaSeguimiento.closed &&
       typeof ventanaSeguimiento.pintarTabla === "function") {
@@ -452,11 +454,55 @@ abrirVentana.addEventListener("click", function () {
 });
 
 /* =============================================================
+   FASE 6 · ESTADÍSTICAS Y BORRAR TODO
+   ============================================================= */
+const totalHabitos = document.getElementById("totalHabitos");
+const totalCumplidos = document.getElementById("totalCumplidos");
+const totalFallados = document.getElementById("totalFallados");
+const porcentaje = document.getElementById("porcentaje");
+const borrarTodo = document.getElementById("borrarTodo");
+
+/** Calcula el resumen recorriendo el array de registros con filter. */
+function pintarEstadisticas() {
+  const cumplidos = registros.filter(function (r) { return r.cumplido; }).length;
+  const fallados = registros.filter(function (r) { return !r.cumplido; }).length;
+  const exito = registros.length === 0
+    ? 0
+    : Math.round((cumplidos / registros.length) * 100);
+
+  totalHabitos.textContent = habitos.length;
+  totalCumplidos.textContent = cumplidos;
+  totalFallados.textContent = fallados;
+  porcentaje.textContent = exito + "%";
+}
+
+/** Pide confirmación, borra las dos cookies y vacía los arrays. */
+function borrarDatos() {
+  const seguro = confirm("¿Seguro que quieres borrar todos los hábitos y registros? No se puede deshacer.");
+  if (!seguro) {
+    return;
+  }
+
+  borrarCookie("habitos");
+  borrarCookie("registros");
+  habitos = [];
+  registros = [];
+
+  pintarListaHabitos();
+  rellenarDesplegable();
+  refrescarVistas();
+  console.log("Datos borrados");
+}
+
+borrarTodo.addEventListener("click", borrarDatos);
+
+/* =============================================================
    ARRANQUE
    ============================================================= */
 cargarTodo();
 pintarListaHabitos();
 rellenarDesplegable();
+pintarEstadisticas();
 regFecha.value = hoy();
 console.log("Hábitos cargados:", habitos);
 console.log("Registros cargados:", registros);

@@ -337,6 +337,10 @@ select:focus {
 }
 
 /* ---------- Página de la segunda ventana ---------- */
+.pagina-seguimiento {
+  padding: 0 16px;
+}
+
 .pagina-seguimiento .modal-caja {
   margin: 24px auto;
   max-height: none;
@@ -346,4 +350,63 @@ select:focus {
   color: var(--error);
   text-align: center;
   padding: 24px;
+}
+
+/* ---------- Panel de estadísticas ---------- */
+.estadisticas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  text-align: center;
+}
+
+.dato {
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.numero {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.etiqueta {
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+
+.boton-peligro {
+  grid-column: 1 / -1;
+  background: transparent;
+  color: var(--error);
+  border: 1px solid var(--error);
+}
+
+.boton-peligro:hover {
+  background: var(--error);
+  color: #2a0a0a;
+}
+
+@media (min-width: 760px) {
+  .estadisticas {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(4, 1fr) auto;
+    align-items: center;
+  }
+
+  .boton-peligro {
+    grid-column: auto;
+    margin-top: 0;
+  }
+}
+
+footer {
+  text-align: center;
+  color: var(--suave);
+  font-size: 0.85rem;
+  padding: 24px 16px;
 }
