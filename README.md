@@ -108,3 +108,28 @@ La lista se pinta con `createElement` y `textContent` (no con `innerHTML`), así
 **Modal vs `window.open`:** el modal **no es otra ventana**. Es un `div` de la misma página que se muestra u oculta cambiando una clase: comparte el mismo `document`, las mismas variables y el mismo array. `window.open` abre una ventana (o pestaña) nueva del navegador, con su propio documento y sus propias variables, y para hablar con la ventana principal necesita `window.opener`.
 
 **La tabla** se genera por código en `pintarTabla()`: una fila por registro (ordenados por fecha, de más reciente a más antigua). El nombre del hábito se busca con su `habitoId`, el estado se pinta con ✓ en verde o ✗ en rojo, y debajo va el resumen de cumplidos y fallados, que se cuentan con `filter`.
+
+## Fase 5 · Cambiar el estado desde la tabla (criterios e + g)
+
+Cada fila de la tabla tiene un botón **Cambiar** que llama a `toggleCumplido(id)`:
+
+```js
+function toggleCumplido(id) {
+  const registro = registros.find(r => r.id === id);
+  registro.cumplido = !registro.cumplido;   // true <-> false
+  guardarTodo();                            // se guarda en cookie
+  refrescarVistas();                        // se repinta la tabla
+}
+```
+
+`find` devuelve **el mismo objeto** que está dentro del array (no una copia), así que al cambiar `registro.cumplido` se cambia el array real.
+
+**Segunda ventana con `window.opener`:** en el modal hay un botón *Abrir en otra ventana* que hace `window.open("seguimiento.html", ...)`. Esa ventana no tiene datos propios:
+
+- **`window.opener`** es la referencia que tiene la ventana hija a la ventana que la abrió. Desde ella se puede usar cualquier función global del padre.
+- Para pintar, la hija pide los datos con `window.opener.obtenerDatos()`.
+- El botón *Cambiar* de la hija ejecuta `window.opener.toggleCumplido(id)`. La función se ejecuta **en la ventana principal**, cambia su array, guarda la cookie y repinta el modal. Después la hija vuelve a pintar su tabla y se ve el nuevo estado al instante.
+- En sentido contrario, el padre guarda la referencia que devuelve `window.open` (`ventanaSeguimiento`). Si se añade un registro o se cambia un estado desde la principal, llama a `ventanaSeguimiento.pintarTabla()` y la segunda ventana también se actualiza.
+- Si la ventana principal se cierra, `hayPadre()` lo detecta (`window.opener.closed`) y se muestra un aviso en vez de dar error.
+
+Así un botón de la segunda ventana cambia los datos de la primera: es comunicación entre ventanas (criterio f).

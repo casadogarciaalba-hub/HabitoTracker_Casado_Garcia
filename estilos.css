@@ -298,3 +298,52 @@ select:focus {
 .resumen {
   color: var(--suave);
 }
+
+/* ---------- Botón Cambiar y pie del modal ---------- */
+.boton-cambiar {
+  font: inherit;
+  font-size: 0.85rem;
+  background: transparent;
+  color: var(--texto);
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.boton-cambiar:hover {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+
+.modal-pie {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.boton-secundario {
+  background: transparent;
+  color: var(--acento);
+  border: 1px solid var(--acento);
+  margin-top: 0;
+}
+
+.boton-secundario:hover {
+  background: var(--acento);
+  color: #06210f;
+}
+
+/* ---------- Página de la segunda ventana ---------- */
+.pagina-seguimiento .modal-caja {
+  margin: 24px auto;
+  max-height: none;
+}
+
+.aviso {
+  color: var(--error);
+  text-align: center;
+  padding: 24px;
+}

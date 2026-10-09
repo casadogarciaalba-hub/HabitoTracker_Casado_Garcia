@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguimiento · HábitoTracker</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body class="pagina-seguimiento">
+
+  <!-- Segunda ventana: se abre con window.open desde index.html -->
+  <div class="modal-caja">
+    <div class="modal-cabecera">
+      <h2>Seguimiento</h2>
+      <button type="button" id="cerrarVentana" class="cerrar" aria-label="Cerrar ventana">✕</button>
+    </div>
+
+    <div class="tabla-scroll">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Hábito</th>
+            <th>Fecha</th>
+            <th>Observaciones</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+      </table>
+    </div>
+
+    <p id="resumenTabla" class="resumen"></p>
+  </div>
+
+  <script src="seguimiento.js"></script>
+</body>
+</html>

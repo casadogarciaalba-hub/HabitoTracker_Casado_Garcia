@@ -262,6 +262,7 @@ function crearRegistro(evento) {
 
   registros.push(registro);
   guardarTodo();
+  refrescarVistas();
 
   formRegistro.reset();
   regFecha.value = hoy();
@@ -306,7 +307,7 @@ function pintarTabla() {
   if (registros.length === 0) {
     const fila = document.createElement("tr");
     const celda = document.createElement("td");
-    celda.colSpan = 4;
+    celda.colSpan = 5;
     celda.className = "vacio";
     celda.textContent = "No hay registros todavía.";
     fila.appendChild(celda);
@@ -332,7 +333,18 @@ function pintarTabla() {
     celdaEstado.textContent = registro.cumplido ? "✓ Cumplido" : "✗ Fallado";
     celdaEstado.className = registro.cumplido ? "ok" : "ko";
 
-    fila.append(celdaHabito, celdaFecha, celdaObs, celdaEstado);
+    // Botón para invertir el estado de este registro
+    const celdaAccion = document.createElement("td");
+    const botonCambiar = document.createElement("button");
+    botonCambiar.type = "button";
+    botonCambiar.className = "boton-cambiar";
+    botonCambiar.textContent = "Cambiar";
+    botonCambiar.addEventListener("click", function () {
+      toggleCumplido(registro.id);
+    });
+    celdaAccion.appendChild(botonCambiar);
+
+    fila.append(celdaHabito, celdaFecha, celdaObs, celdaEstado, celdaAccion);
     cuerpoTabla.appendChild(fila);
   });
 
@@ -380,6 +392,63 @@ document.addEventListener("keydown", function (e) {
   if (e.key === "Escape" && !modal.classList.contains("oculto")) {
     ocultarModal();
   }
+});
+
+/* =============================================================
+   FASE 5 · CAMBIAR EL ESTADO DESDE LA TABLA
+   ============================================================= */
+const abrirVentana = document.getElementById("abrirVentana");
+let ventanaSeguimiento = null; // referencia a la segunda ventana
+
+/**
+ * Invierte el campo cumplido de un registro del array REAL,
+ * guarda en cookie y repinta todo lo que lo muestra.
+ * Es una función global, así que la segunda ventana puede llamarla con
+ * window.opener.toggleCumplido(id).
+ * @param {string} id Id del registro
+ * @returns {boolean} true si se encontró y se cambió
+ */
+function toggleCumplido(id) {
+  const registro = registros.find(function (r) {
+    return r.id === id;
+  });
+  if (!registro) {
+    return false;
+  }
+
+  registro.cumplido = !registro.cumplido;
+  guardarTodo();
+  refrescarVistas();
+  console.log("Registro " + id + " ahora cumplido =", registro.cumplido);
+  return true;
+}
+
+/**
+ * Devuelve los datos a la segunda ventana. Como habitos y registros
+ * se declaran con let, no son propiedades de window: la hija los
+ * pide a través de esta función.
+ */
+function obtenerDatos() {
+  return { habitos: habitos, registros: registros };
+}
+
+/** Repinta la tabla del modal y, si está abierta, la de la segunda ventana. */
+function refrescarVistas() {
+  pintarTabla();
+
+  if (ventanaSeguimiento && !ventanaSeguimiento.closed &&
+      typeof ventanaSeguimiento.pintarTabla === "function") {
+    ventanaSeguimiento.pintarTabla();
+  }
+}
+
+// Abre la tabla en una segunda ventana del navegador
+abrirVentana.addEventListener("click", function () {
+  ventanaSeguimiento = window.open(
+    "seguimiento.html",
+    "seguimiento",
+    "width=760,height=560"
+  );
 });
 
 /* =============================================================
