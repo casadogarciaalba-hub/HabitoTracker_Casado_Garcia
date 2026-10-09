@@ -48,3 +48,109 @@ body {
   display: grid;
   gap: 16px;
 }
+
+/* ---------- Tarjetas y formularios ---------- */
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.tarjeta h2 {
+  color: var(--acento);
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+}
+
+.tarjeta h3 {
+  margin: 20px 0 8px;
+  font-size: 1rem;
+  color: var(--suave);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 0.9rem;
+  color: var(--suave);
+  margin-top: 6px;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  background: var(--fondo);
+  color: var(--texto);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--acento);
+  border-color: transparent;
+}
+
+.boton {
+  font: inherit;
+  font-weight: 600;
+  background: var(--acento);
+  color: #06210f;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background: var(--acento-oscuro);
+}
+
+.error {
+  color: var(--error);
+  min-height: 1.4em;
+  font-size: 0.9rem;
+}
+
+/* ---------- Lista de hábitos ---------- */
+.lista {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.lista li {
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.lista .categoria {
+  font-size: 0.75rem;
+  background: var(--borde);
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-left: 6px;
+}
+
+.lista .descripcion {
+  display: block;
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+
+.vacio {
+  color: var(--suave);
+  font-style: italic;
+}

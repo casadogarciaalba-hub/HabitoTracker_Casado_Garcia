@@ -43,3 +43,27 @@ guardarCookie("prueba", [{ a: 1 }, { b: "hola; adiós" }]);
 leerCookie("prueba");   // -> [{ a: 1 }, { b: "hola; adiós" }]
 borrarCookie("prueba");
 ```
+
+## Fase 2 · Formulario A: crear hábitos (criterio e)
+
+**Estructura de un hábito**
+
+```js
+{
+  id: "lq3k9x2ab1c",          // único: Date.now() en base 36 + parte aleatoria
+  nombre: "Beber 2 litros de agua",
+  descripcion: "Repartido durante el día",
+  categoria: "Salud"          // Salud, Estudio, Ocio, Deporte o Trabajo
+}
+```
+
+**Validación** (en `crearHabito`):
+
+- `evento.preventDefault()` para que el formulario no recargue la página.
+- El nombre, quitando espacios con `trim()`, no puede estar vacío.
+- No puede haber dos hábitos con el mismo nombre (se comprueba con `some`, sin distinguir mayúsculas).
+- Si algo falla se muestra el error en rojo bajo el formulario y se pone el foco en el campo.
+
+Si todo está bien: se crea el objeto, `habitos.push(habito)`, `guardarTodo()`, `formHabito.reset()` y se repinta la lista.
+
+La lista se pinta con `createElement` y `textContent` (no con `innerHTML`), así un texto con etiquetas HTML no se ejecuta.

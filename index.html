@@ -14,6 +14,34 @@
   </header>
 
   <main class="contenido">
+
+    <!-- FORMULARIO A · Crear hábitos -->
+    <section class="tarjeta">
+      <h2>Nuevo hábito</h2>
+      <form id="formHabito" novalidate>
+        <label for="habNombre">Nombre *</label>
+        <input type="text" id="habNombre" maxlength="40" placeholder="Ej: Beber 2 litros de agua">
+
+        <label for="habDescripcion">Descripción</label>
+        <textarea id="habDescripcion" rows="2" maxlength="120" placeholder="Opcional"></textarea>
+
+        <label for="habCategoria">Categoría</label>
+        <select id="habCategoria">
+          <option value="Salud">Salud</option>
+          <option value="Estudio">Estudio</option>
+          <option value="Ocio">Ocio</option>
+          <option value="Deporte">Deporte</option>
+          <option value="Trabajo">Trabajo</option>
+        </select>
+
+        <p class="error" id="errorHabito"></p>
+        <button type="submit" class="boton">Crear hábito</button>
+      </form>
+
+      <h3>Mis hábitos</h3>
+      <ul id="listaHabitos" class="lista"></ul>
+    </section>
+
   </main>
 
   <script src="app.js"></script>

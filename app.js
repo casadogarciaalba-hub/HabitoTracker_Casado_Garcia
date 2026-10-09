@@ -84,8 +84,112 @@ function cargarTodo() {
 }
 
 /* =============================================================
+   UTILIDADES
+   ============================================================= */
+
+/** Genera un id único combinando la fecha actual y un número aleatorio. */
+function crearId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+/** Busca un hábito por su id. Devuelve el objeto o undefined. */
+function buscarHabito(id) {
+  return habitos.find(function (habito) {
+    return habito.id === id;
+  });
+}
+
+/* =============================================================
+   FASE 2 · FORMULARIO A: CREAR HÁBITOS
+   ============================================================= */
+const formHabito = document.getElementById("formHabito");
+const habNombre = document.getElementById("habNombre");
+const habDescripcion = document.getElementById("habDescripcion");
+const habCategoria = document.getElementById("habCategoria");
+const errorHabito = document.getElementById("errorHabito");
+const listaHabitos = document.getElementById("listaHabitos");
+
+/**
+ * Valida el formulario, crea el objeto hábito y lo añade al array.
+ * Validación: nombre obligatorio y que no esté repetido.
+ */
+function crearHabito(evento) {
+  evento.preventDefault(); // que el formulario no recargue la página
+
+  const nombre = habNombre.value.trim();
+
+  if (nombre === "") {
+    errorHabito.textContent = "El nombre del hábito es obligatorio.";
+    habNombre.focus();
+    return;
+  }
+
+  const repetido = habitos.some(function (habito) {
+    return habito.nombre.toLowerCase() === nombre.toLowerCase();
+  });
+  if (repetido) {
+    errorHabito.textContent = "Ya tienes un hábito con ese nombre.";
+    habNombre.focus();
+    return;
+  }
+
+  const habito = {
+    id: crearId(),
+    nombre: nombre,
+    descripcion: habDescripcion.value.trim(),
+    categoria: habCategoria.value
+  };
+
+  habitos.push(habito);
+  guardarTodo();
+
+  formHabito.reset();
+  errorHabito.textContent = "";
+  pintarListaHabitos();
+  console.log("Hábito creado:", habito);
+}
+
+/** Pinta la lista de hábitos creados recorriendo el array. */
+function pintarListaHabitos() {
+  listaHabitos.innerHTML = "";
+
+  if (habitos.length === 0) {
+    const vacio = document.createElement("li");
+    vacio.className = "vacio";
+    vacio.textContent = "Todavía no has creado ningún hábito.";
+    listaHabitos.appendChild(vacio);
+    return;
+  }
+
+  habitos.forEach(function (habito) {
+    const li = document.createElement("li");
+
+    const nombre = document.createElement("strong");
+    nombre.textContent = habito.nombre;
+
+    const categoria = document.createElement("span");
+    categoria.className = "categoria";
+    categoria.textContent = habito.categoria;
+
+    li.append(nombre, categoria);
+
+    if (habito.descripcion) {
+      const descripcion = document.createElement("span");
+      descripcion.className = "descripcion";
+      descripcion.textContent = habito.descripcion;
+      li.appendChild(descripcion);
+    }
+
+    listaHabitos.appendChild(li);
+  });
+}
+
+formHabito.addEventListener("submit", crearHabito);
+
+/* =============================================================
    ARRANQUE
    ============================================================= */
 cargarTodo();
+pintarListaHabitos();
 console.log("Hábitos cargados:", habitos);
 console.log("Registros cargados:", registros);
