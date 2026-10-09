@@ -154,3 +154,26 @@ select:focus {
   color: var(--suave);
   font-style: italic;
 }
+
+/* ---------- Formulario de registro ---------- */
+.casilla {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--texto);
+  cursor: pointer;
+}
+
+.casilla input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--acento);
+}
+
+/* Dos columnas en pantallas anchas */
+@media (min-width: 760px) {
+  .contenido {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}

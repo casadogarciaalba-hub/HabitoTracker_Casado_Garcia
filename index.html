@@ -42,6 +42,31 @@
       <ul id="listaHabitos" class="lista"></ul>
     </section>
 
+    <!-- FORMULARIO B · Registrar días -->
+    <section class="tarjeta">
+      <h2>Registrar un día</h2>
+      <form id="formRegistro" novalidate>
+        <label for="regHabito">Hábito *</label>
+        <select id="regHabito">
+          <!-- Las opciones se generan por código desde el array habitos -->
+        </select>
+
+        <label for="regFecha">Fecha *</label>
+        <input type="date" id="regFecha">
+
+        <label for="regObservaciones">Observaciones</label>
+        <textarea id="regObservaciones" rows="2" maxlength="120" placeholder="¿Cómo ha ido?"></textarea>
+
+        <label class="casilla">
+          <input type="checkbox" id="regCumplido" checked>
+          Cumplido
+        </label>
+
+        <p class="error" id="errorRegistro"></p>
+        <button type="submit" class="boton">Guardar registro</button>
+      </form>
+    </section>
+
   </main>
 
   <script src="app.js"></script>

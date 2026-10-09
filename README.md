@@ -67,3 +67,28 @@ borrarCookie("prueba");
 Si todo está bien: se crea el objeto, `habitos.push(habito)`, `guardarTodo()`, `formHabito.reset()` y se repinta la lista.
 
 La lista se pinta con `createElement` y `textContent` (no con `innerHTML`), así un texto con etiquetas HTML no se ejecuta.
+
+## Fase 3 · Formulario B: registrar días (criterios e + d)
+
+**Estructura de un registro**
+
+```js
+{
+  id: "lq3kb1z9f0a",
+  habitoId: "lq3k9x2ab1c",    // id del hábito al que pertenece
+  fecha: "2026-10-09",
+  observaciones: "Me costó por la tarde",
+  cumplido: true
+}
+```
+
+**Cómo se rellena el desplegable por código** (`rellenarDesplegable`):
+
+1. Se vacía el `<select>` con `innerHTML = ""`.
+2. Se añade una primera opción vacía ("-- Elige un hábito --").
+3. Se recorre `habitos` con `forEach` y por cada uno se crea un `<option>` con `createElement`: el `value` es el **id** del hábito y el texto es su nombre y su categoría.
+4. Se llama al arrancar la página y **cada vez que se crea un hábito**, así el desplegable siempre está al día.
+
+**Relación registro → hábito:** el registro no copia el nombre del hábito, solo guarda su `habitoId` (el `value` de la opción elegida). Cuando hace falta el nombre se busca con `buscarHabito(registro.habitoId)`, que usa `habitos.find(...)`. Si se cambiara el nombre del hábito, todos sus registros lo verían cambiado, como una clave ajena en una base de datos.
+
+**Validación:** tiene que haber un hábito elegido que exista en el array y una fecha. La fecha se rellena por defecto con la de hoy.

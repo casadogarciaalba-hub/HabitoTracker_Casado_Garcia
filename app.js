@@ -146,6 +146,7 @@ function crearHabito(evento) {
   formHabito.reset();
   errorHabito.textContent = "";
   pintarListaHabitos();
+  rellenarDesplegable(); // el nuevo hábito aparece en el formulario B
   console.log("Hábito creado:", habito);
 }
 
@@ -187,9 +188,96 @@ function pintarListaHabitos() {
 formHabito.addEventListener("submit", crearHabito);
 
 /* =============================================================
+   FASE 3 · FORMULARIO B: REGISTRAR DÍAS
+   ============================================================= */
+const formRegistro = document.getElementById("formRegistro");
+const regHabito = document.getElementById("regHabito");
+const regFecha = document.getElementById("regFecha");
+const regObservaciones = document.getElementById("regObservaciones");
+const regCumplido = document.getElementById("regCumplido");
+const errorRegistro = document.getElementById("errorRegistro");
+
+/** Devuelve la fecha de hoy en formato AAAA-MM-DD (el que usa input date). */
+function hoy() {
+  const fecha = new Date();
+  const mes = String(fecha.getMonth() + 1).padStart(2, "0");
+  const dia = String(fecha.getDate()).padStart(2, "0");
+  return fecha.getFullYear() + "-" + mes + "-" + dia;
+}
+
+/**
+ * Rellena el desplegable de hábitos recorriendo el array.
+ * Cada <option> lleva como value el id del hábito y como texto su nombre.
+ */
+function rellenarDesplegable() {
+  const seleccionado = regHabito.value; // para no perder la elección actual
+  regHabito.innerHTML = "";
+
+  const primera = document.createElement("option");
+  primera.value = "";
+  primera.textContent = habitos.length === 0
+    ? "Primero crea un hábito"
+    : "-- Elige un hábito --";
+  regHabito.appendChild(primera);
+
+  habitos.forEach(function (habito) {
+    const opcion = document.createElement("option");
+    opcion.value = habito.id;
+    opcion.textContent = habito.nombre + " (" + habito.categoria + ")";
+    regHabito.appendChild(opcion);
+  });
+
+  regHabito.value = buscarHabito(seleccionado) ? seleccionado : "";
+}
+
+/**
+ * Valida el formulario B, crea el registro con su habitoId
+ * y lo añade al array registros.
+ */
+function crearRegistro(evento) {
+  evento.preventDefault();
+
+  const habitoId = regHabito.value;
+  const fecha = regFecha.value;
+
+  if (habitoId === "" || !buscarHabito(habitoId)) {
+    errorRegistro.textContent = "Elige un hábito del desplegable.";
+    regHabito.focus();
+    return;
+  }
+
+  if (fecha === "") {
+    errorRegistro.textContent = "La fecha es obligatoria.";
+    regFecha.focus();
+    return;
+  }
+
+  const registro = {
+    id: crearId(),
+    habitoId: habitoId,          // relación con el hábito
+    fecha: fecha,
+    observaciones: regObservaciones.value.trim(),
+    cumplido: regCumplido.checked
+  };
+
+  registros.push(registro);
+  guardarTodo();
+
+  formRegistro.reset();
+  regFecha.value = hoy();
+  regHabito.value = habitoId;    // deja elegido el mismo hábito
+  errorRegistro.textContent = "";
+  console.log("Registro creado:", registro);
+}
+
+formRegistro.addEventListener("submit", crearRegistro);
+
+/* =============================================================
    ARRANQUE
    ============================================================= */
 cargarTodo();
 pintarListaHabitos();
+rellenarDesplegable();
+regFecha.value = hoy();
 console.log("Hábitos cargados:", habitos);
 console.log("Registros cargados:", registros);
