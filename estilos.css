@@ -1,0 +1,50 @@
+/* =============================================================
+   HábitoTracker · estilos
+   ============================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --fondo: #0f1a14;
+  --tarjeta: #17261d;
+  --borde: #2a4234;
+  --texto: #e6f2ea;
+  --suave: #9fb8a8;
+  --acento: #4ade80;
+  --acento-oscuro: #22a35a;
+  --error: #f87171;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+.cabecera {
+  text-align: center;
+  padding: 32px 16px 16px;
+}
+
+.cabecera h1 {
+  font-size: 2.2rem;
+  color: var(--acento);
+}
+
+.subtitulo {
+  color: var(--suave);
+}
+
+.contenido {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+  display: grid;
+  gap: 16px;
+}
