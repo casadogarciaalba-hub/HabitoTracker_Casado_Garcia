@@ -177,3 +177,124 @@ select:focus {
     align-items: start;
   }
 }
+
+/* ---------- Menú ---------- */
+#menu {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px 8px;
+}
+
+#menu a {
+  color: var(--suave);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+}
+
+#menu a:hover,
+#menu a.activo {
+  color: #06210f;
+  background: var(--acento);
+  border-color: var(--acento);
+}
+
+/* ---------- Modal ---------- */
+/* Capa exterior: ocupa toda la pantalla y oscurece el fondo */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 100;
+}
+
+/* Clase que oculta el modal */
+.oculto {
+  display: none;
+}
+
+/* Caja interior: pequeña y centrada */
+.modal-caja {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-cabecera h2 {
+  color: var(--acento);
+  font-size: 1.3rem;
+}
+
+.cerrar {
+  background: none;
+  border: 1px solid var(--borde);
+  color: var(--texto);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.cerrar:hover {
+  background: var(--borde);
+}
+
+/* ---------- Tabla ---------- */
+.tabla-scroll {
+  overflow: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tabla th,
+.tabla td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.tabla th {
+  color: var(--suave);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--tarjeta);
+}
+
+.ok {
+  color: var(--acento);
+  font-weight: 700;
+}
+
+.ko {
+  color: var(--error);
+  font-weight: 700;
+}
+
+.resumen {
+  color: var(--suave);
+}

@@ -92,3 +92,19 @@ La lista se pinta con `createElement` y `textContent` (no con `innerHTML`), así
 **Relación registro → hábito:** el registro no copia el nombre del hábito, solo guarda su `habitoId` (el `value` de la opción elegida). Cuando hace falta el nombre se busca con `buscarHabito(registro.habitoId)`, que usa `habitos.find(...)`. Si se cambiara el nombre del hábito, todos sus registros lo verían cambiado, como una clave ajena en una base de datos.
 
 **Validación:** tiene que haber un hábito elegido que exista en el array y una fecha. La fecha se rellena por defecto con la de hoy.
+
+## Fase 4 · Menú y ventana flotante (modal) con la tabla (criterio d)
+
+**Menú:** `<nav id="menu">` con dos enlaces, *Inicio* y *Ver seguimiento*. El enlace activo se resalta con la clase `activo`.
+
+**Cómo funciona el modal:**
+
+- En el HTML hay una capa `<div id="modal" class="modal oculto">` con una caja interior (título, botón ✕ y tabla).
+- En el CSS, `.modal` usa `position: fixed; inset: 0;` para tapar toda la pantalla, con fondo `rgba(0, 0, 0, .6)` para que se vea la página oscurecida detrás. La caja interior tiene `max-width` y va centrada con flexbox.
+- La clase `.oculto` tiene `display: none`.
+- En el JS, *Ver seguimiento* hace `modal.classList.remove("oculto")` y la ✕ hace `modal.classList.add("oculto")`.
+- También se cierra al pulsar en el fondo oscuro (`e.target === this`, es decir, el clic ha sido en la capa y no dentro de la caja) y con la tecla Escape.
+
+**Modal vs `window.open`:** el modal **no es otra ventana**. Es un `div` de la misma página que se muestra u oculta cambiando una clase: comparte el mismo `document`, las mismas variables y el mismo array. `window.open` abre una ventana (o pestaña) nueva del navegador, con su propio documento y sus propias variables, y para hablar con la ventana principal necesita `window.opener`.
+
+**La tabla** se genera por código en `pintarTabla()`: una fila por registro (ordenados por fecha, de más reciente a más antigua). El nombre del hábito se busca con su `habitoId`, el estado se pinta con ✓ en verde o ✗ en rojo, y debajo va el resumen de cumplidos y fallados, que se cuentan con `filter`.

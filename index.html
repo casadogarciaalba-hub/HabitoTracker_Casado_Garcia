@@ -13,6 +13,12 @@
     <p class="subtitulo">Gestor de hábitos con registros y tabla de seguimiento</p>
   </header>
 
+  <!-- MENÚ DE NAVEGACIÓN -->
+  <nav id="menu">
+    <a href="#" id="enlaceInicio" class="activo">Inicio</a>
+    <a href="#" id="enlaceSeguimiento">Ver seguimiento</a>
+  </nav>
+
   <main class="contenido">
 
     <!-- FORMULARIO A · Crear hábitos -->
@@ -68,6 +74,32 @@
     </section>
 
   </main>
+
+  <!-- MODAL · Ventana flotante con la tabla de seguimiento -->
+  <div id="modal" class="modal oculto">
+    <div class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+      <div class="modal-cabecera">
+        <h2 id="tituloModal">Seguimiento</h2>
+        <button type="button" id="cerrarModal" class="cerrar" aria-label="Cerrar">✕</button>
+      </div>
+
+      <div class="tabla-scroll">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>Hábito</th>
+              <th>Fecha</th>
+              <th>Observaciones</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoTabla"></tbody>
+        </table>
+      </div>
+
+      <p id="resumenTabla" class="resumen"></p>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

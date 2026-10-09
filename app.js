@@ -273,6 +273,116 @@ function crearRegistro(evento) {
 formRegistro.addEventListener("submit", crearRegistro);
 
 /* =============================================================
+   FASE 4 · MENÚ Y MODAL CON LA TABLA
+   ============================================================= */
+const modal = document.getElementById("modal");
+const cerrarModal = document.getElementById("cerrarModal");
+const enlaceInicio = document.getElementById("enlaceInicio");
+const enlaceSeguimiento = document.getElementById("enlaceSeguimiento");
+const cuerpoTabla = document.getElementById("cuerpoTabla");
+const resumenTabla = document.getElementById("resumenTabla");
+
+/** Convierte "2026-10-09" en "09/10/2026" para mostrarlo en la tabla. */
+function formatearFecha(fechaISO) {
+  const partes = fechaISO.split("-");
+  return partes[2] + "/" + partes[1] + "/" + partes[0];
+}
+
+/** Devuelve una copia de los registros ordenada de la fecha más reciente a la más antigua. */
+function registrosOrdenados() {
+  return registros.slice().sort(function (a, b) {
+    return b.fecha.localeCompare(a.fecha);
+  });
+}
+
+/**
+ * Genera la tabla dentro del modal: una fila por registro con
+ * nombre del hábito (buscado por habitoId), fecha, observaciones
+ * y estado, más un resumen de cumplidos y fallados.
+ */
+function pintarTabla() {
+  cuerpoTabla.innerHTML = "";
+
+  if (registros.length === 0) {
+    const fila = document.createElement("tr");
+    const celda = document.createElement("td");
+    celda.colSpan = 4;
+    celda.className = "vacio";
+    celda.textContent = "No hay registros todavía.";
+    fila.appendChild(celda);
+    cuerpoTabla.appendChild(fila);
+    resumenTabla.textContent = "";
+    return;
+  }
+
+  registrosOrdenados().forEach(function (registro) {
+    const habito = buscarHabito(registro.habitoId);
+    const fila = document.createElement("tr");
+
+    const celdaHabito = document.createElement("td");
+    celdaHabito.textContent = habito ? habito.nombre : "(hábito borrado)";
+
+    const celdaFecha = document.createElement("td");
+    celdaFecha.textContent = formatearFecha(registro.fecha);
+
+    const celdaObs = document.createElement("td");
+    celdaObs.textContent = registro.observaciones || "—";
+
+    const celdaEstado = document.createElement("td");
+    celdaEstado.textContent = registro.cumplido ? "✓ Cumplido" : "✗ Fallado";
+    celdaEstado.className = registro.cumplido ? "ok" : "ko";
+
+    fila.append(celdaHabito, celdaFecha, celdaObs, celdaEstado);
+    cuerpoTabla.appendChild(fila);
+  });
+
+  const cumplidos = registros.filter(function (r) { return r.cumplido; }).length;
+  const fallados = registros.length - cumplidos;
+  resumenTabla.textContent = "Cumplidos: " + cumplidos + " · Fallados: " + fallados +
+    " · Total: " + registros.length;
+}
+
+/** Muestra el modal quitando la clase "oculto". */
+function abrirModal(evento) {
+  evento.preventDefault();
+  pintarTabla();
+  modal.classList.remove("oculto");
+  enlaceSeguimiento.classList.add("activo");
+  enlaceInicio.classList.remove("activo");
+}
+
+/** Oculta el modal poniendo la clase "oculto". */
+function ocultarModal() {
+  modal.classList.add("oculto");
+  enlaceInicio.classList.add("activo");
+  enlaceSeguimiento.classList.remove("activo");
+}
+
+enlaceSeguimiento.addEventListener("click", abrirModal);
+
+enlaceInicio.addEventListener("click", function (evento) {
+  evento.preventDefault();
+  ocultarModal();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+cerrarModal.addEventListener("click", ocultarModal);
+
+// Cerrar al pulsar en el fondo oscuro (no dentro de la caja)
+modal.addEventListener("click", function (e) {
+  if (e.target === this) {
+    ocultarModal();
+  }
+});
+
+// Cerrar con la tecla Escape
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && !modal.classList.contains("oculto")) {
+    ocultarModal();
+  }
+});
+
+/* =============================================================
    ARRANQUE
    ============================================================= */
 cargarTodo();
